@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maple Magic Sarap</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #d35400;
+            --secondary: #f39c12;
+            --bg: #fdf2e9;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(#e6b0aa 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--primary);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+
+        /* Waffle Item Row */
+        .waffle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #eee;
+            margin-bottom: 10px;
+        }
+
+        .waffle-item label {
+            margin-bottom: 0;
+            flex: 1;
+        }
+
+        .waffle-item input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .waffle-price {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+
+        /* Price Display */
+        .price-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Button */
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #a04000;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            color: #27ae60;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <h1>Maple Magic Waffles🧇</h1>
+        <p class="subtitle">Crispy, Golden, Delicious.</p>
+
+        <!-- Order Form -->
+        <form id="orderForm" action="https://formsubmit.co/rektway25@gmail.com" method="POST">
+            
+            <!-- Hidden Inputs for FormSubmit -->
+            <input type="hidden" name="_subject" value="New Waffle Order">
+            <input type="hidden" name="_next" value="http://127.0.0.1:5500/index.html?success=true">
+
+            <!-- Personal Info -->
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="Name" placeholder="Kevin A. Zianna" required>
+            </div>
+
+            <!-- Grade and Section -->
+            <div class="row">
+                <div class="form-group">
+                    <label for="grade">Grade</label>
+                    <input type="text" id="grade" name="Grade" placeholder="9" required>
+                </div>
+                <div class="form-group">
+                    <label for="section">Section</label>
+                    <input type="text" id="section" name="Section" placeholder="A" required>
+                </div>
+            </div>
+
+            <!-- Waffle Selection -->
+            <div class="form-group">
+                <label>Choose Your Waffles</label>
+                
+                <!-- Normal Waffle -->
+                <div class="waffle-item">
+                    <label>
+                        <strong>Normal Waffle</strong>
+                        <span class="waffle-price">(₱10.00 each)</span>
+                    </label>
+                    <input type="number" class="waffle-qty" name="Normal_Waffle_Qty" min="0" value="0" onchange="calculateTotal()">
+                </div>
+
+                <!-- Signature Maple Waffle -->
+                <div class="waffle-item">
+                    <label>
+                        <strong>Signature Maple Waffle</strong>
+                        <span class="waffle-price">(₱15.00 each)</span>
+                    </label>
+                    <input type="number" class="waffle-qty" name="Maple_Waffle_Qty" min="0" value="0" onchange="calculateTotal()">
+                </div>
+            </div>
+
+            <!-- Special Instructions -->
+            <div class="form-group">
+                <label for="notes">Special Instructions</label>
+                <textarea id="notes" name="Notes" rows="3" placeholder="Extra crispy, no sugar, etc."></textarea>
+            </div>
+
+            <!-- Total Price (Hidden field so it gets sent to email) -->
+            <input type="hidden" id="totalPriceInput" name="Total_Price" value="0.00">
+
+            <!-- Visible Price Display -->
+            <div class="price-display">
+                Total: ₱<span id="totalPrice">0.00</span>
+            </div>
+
+            <button type="submit">Place Order</button>
+        </form>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message">
+            <div class="success-icon">✓</div>
+            <h2>Order Received!</h2>
+            <p>Thank you for your order!</p>
+            <p>Your waffles are being cooked!</p>
+            <button onclick="window.location.href=window.location.pathname" style="margin-top: 20px; background-color: #27ae60;">Order Another</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        function calculateTotal() {
+            // Base prices
+            const normalPrice = 10.00;
+            const signaturePrice = 15.00;
+            
+            // Get quantities
+            let normalQty = parseInt(document.querySelector('input[name="Normal_Waffle_Qty"]').value) || 0;
+            let mapleQty = parseInt(document.querySelector('input[name="Maple_Waffle_Qty"]').value) || 0;
+
+            // Calculate total
+            const total = (normalQty * normalPrice) + (mapleQty * signaturePrice);
+
+            // Update the displays
+            document.getElementById('totalPrice').innerText = total.toFixed(2);
+            document.getElementById('totalPriceInput').value = total.toFixed(2);
+            
+            return total;
+        }
+
+        // Form validation before submit
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            const normalQty = parseInt(document.querySelector('input[name="Normal_Waffle_Qty"]').value) || 0;
+            const mapleQty = parseInt(document.querySelector('input[name="Maple_Waffle_Qty"]').value) || 0;
+
+            if (normalQty === 0 && mapleQty === 0) {
+                alert("Please select at least one waffle!");
+                e.preventDefault(); // Stop form submission
+            }
+        });
+
+        // Checks if the page was loaded after a successful form submission
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === 'true') {
+                // Hide form and show success message
+                document.getElementById('orderForm').style.display = 'none';
+                document.querySelector('.subtitle').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else {
+                // Calculate initial price
+                calculateTotal();
+            }
+        };
+    </script>
+</body>
+</html>
